@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using ModelBindeIssue.Dtos;
+@model UserDto
+@{
+    var p = Model.CompanyLocation.FirstOrDefault();
+    var c = Model.CompanyLocation.LastOrDefault();
+}
+<form asp-action="Index" id="xform" method="post">
+    ID: <input type="text" asp-for="Id" /> <br />
+    UserName: <input type="text" asp-for="UserName" />
+    Company: <input type="text" asp-for="Company" />
+    Company Province:<input type="text" asp-for="CompanyLocation" name="CompanyLocation" value="@p" />
+    <em>should be dropdown box</em><br />
+    Company City: <input type="text" asp-for="CompanyLocation" name="CompanyLocation" value="@c" />
+    <em>should be dropdown box</em><br />
+    Company Address: <input type="text" asp-for="CompanyAddress" /> <br />
+    <button type="submit">Update</button>
+</form>
+@section Scripts{
+<script>
+    $(function(){
+        var form = $("#xform");
+        form.on('submit',function(e){
+            e.preventDefault();
+            $.ajax(form.attr("action"),{
+                method: form.attr("method"),
+                data:form.serialize()
+            })
+            .then(function(){
+                alert('ok');
+            })
+            .fail(function(){
+                alert("not ok, check the error")
+            })
+        })
+    })
+</script>
+}
